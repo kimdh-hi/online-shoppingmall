@@ -1,7 +1,9 @@
 const express = require("express");
 const router = express.Router();
 const multer = require("multer");
+const { Product } = require("../models/Product");
 
+// for image file (multer)
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, "uploads/");
@@ -23,6 +25,19 @@ router.post("/images", (req, res) => {
       filePath: res.req.file.path,
       fileName: res.req.file.filename,
     });
+  });
+});
+
+// 업로드 데이터 DB에 저장
+router.post("/", (req, res) => {
+  const product = new Product(req.body);
+
+  product.save(err => {
+    if (err) {
+      console.log(err);
+      return res.status(400).json({ success: false, err });
+    }
+    return res.status(200).json({ success: true });
   });
 });
 
