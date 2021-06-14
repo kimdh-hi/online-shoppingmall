@@ -42,11 +42,18 @@ router.post("/", (req, res) => {
 });
 
 router.post("/products", (req, res) => {
+  let skip = req.body.skip ? parseInt(req.body.limit) : 0;
+  let limit = req.body.limit ? parseInt(req.body.limit) : 10;
+
   Product.find()
     .populate("writer")
+    .skip(skip)
+    .limit(limit)
     .exec((err, products) => {
       if (err) return res.status(400).json({ success: false, err });
-      return res.status(200).json({ success: true, products });
+      return res
+        .status(200)
+        .json({ success: true, products, productsLength: products.length });
     });
 });
 

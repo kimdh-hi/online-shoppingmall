@@ -102,9 +102,10 @@ function UploadProductPage(props) {
           ))}
         </select>
         <br />
-        <br />
 
-        <button type="submit">등록</button>
+        <button style={{ alignItems: "center" }} type="submit">
+          등록
+        </button>
       </Form>
     </div>
   );

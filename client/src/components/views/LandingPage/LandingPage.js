@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { FaCode } from "react-icons/fa";
+import { FaCode, FaShekelSign } from "react-icons/fa";
 import axios from "axios";
 import { Icon, Col, Card, Row } from "antd";
 import Meta from "antd/lib/card/Meta";
@@ -7,17 +7,41 @@ import ImageSlider from "../../utils/ImageSlider";
 
 function LandingPage() {
   const [Products, setProducts] = useState([]);
+  const [Skip, setSkip] = useState(0); // 0번째 이미지부터
+  const [Limit, setLimit] = useState(8); // 8개 이미지를 로드
+  const [ProductsLength, setProductsLength] = useState(0);
 
   useEffect(() => {
-    axios.post("/api/product/products").then(response => {
+    let body = {
+      skip: Skip,
+      limit: Limit,
+    };
+    requestProducts(body);
+  }, []);
+
+  const viewMoreHandler = () => {
+    let newLimit = Limit + 4; // 한 줄 (4개)씩 더보기
+    setLimit(newLimit);
+
+    let body = {
+      skip: Skip,
+      limit: newLimit,
+    };
+
+    requestProducts(body);
+  };
+
+  const requestProducts = body => {
+    axios.post("/api/product/products", body).then(response => {
       if (response.data.success) {
-        console.log(response.data);
         setProducts(response.data.products);
+        console.log(response.data.productsLength);
+        setProductsLength(response.data.productsLength);
       } else {
         alert("error occurred by loading products.");
       }
     });
-  }, []);
+  };
 
   const renderCards = Products.map((product, index) => {
     return (
@@ -36,10 +60,13 @@ function LandingPage() {
       </div>
 
       <Row gutter={[16, 16]}>{renderCards}</Row>
+      <br />
 
-      <div style={{ display: "flex", justifyContent: "center" }}>
-        <button>더보기</button>
-      </div>
+      {ProductsLength >= Limit && (
+        <div style={{ display: "flex", justifyContent: "center" }}>
+          <button onClick={viewMoreHandler}>더보기</button>
+        </div>
+      )}
     </div>
   );
 }
