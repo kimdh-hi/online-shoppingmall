@@ -4,6 +4,8 @@ import axios from "axios";
 import { Icon, Col, Card, Row } from "antd";
 import Meta from "antd/lib/card/Meta";
 import ImageSlider from "../../utils/ImageSlider";
+import CheckBox from "./Filters/CheckBox";
+import { countries } from "./Filters/Data";
 
 function LandingPage() {
   const [Products, setProducts] = useState([]);
@@ -58,6 +60,8 @@ function LandingPage() {
       <div style={{ textAlign: "center" }}>
         <h2>Products</h2>
       </div>
+
+      <CheckBox list={countries} />
 
       <Row gutter={[16, 16]}>{renderCards}</Row>
       <br />
