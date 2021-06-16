@@ -12,6 +12,10 @@ function LandingPage() {
   const [Skip, setSkip] = useState(0); // 0번째 이미지부터
   const [Limit, setLimit] = useState(8); // 8개 이미지를 로드
   const [ProductsLength, setProductsLength] = useState(0);
+  const [Filters, setFilters] = useState({
+    countries: [],
+    price: [],
+  });
 
   useEffect(() => {
     let body = {
@@ -55,13 +59,38 @@ function LandingPage() {
     );
   });
 
+  const showNewFilteringResult = filters => {
+    let body = {
+      skip: 0,
+      limit: 8,
+      filters: filters,
+    };
+
+    setSkip(body.skip);
+    setLimit(body.limit);
+
+    requestProducts(body);
+  };
+
+  // filters: checkbox에서 체크된 항목의 ID 값 (Data.js - Data)
+  // type: countriy와 price 두 개 필터를 구분
+  const handleFilters = (filters, type) => {
+    const newFilters = { ...Filters };
+    newFilters[type] = filters;
+
+    showNewFilteringResult(newFilters);
+  };
+
   return (
     <div style={{ width: "75%", margin: "3rem auto" }}>
       <div style={{ textAlign: "center" }}>
         <h2>Products</h2>
       </div>
 
-      <CheckBox list={countries} />
+      <CheckBox
+        list={countries}
+        handleFilters={filters => handleFilters(filters, "countries")}
+      />
 
       <Row gutter={[16, 16]}>{renderCards}</Row>
       <br />

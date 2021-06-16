@@ -23,8 +23,8 @@ const productSchema = mongoose.Schema(
       type: Array,
       default: [],
     },
-    country: {
-      type: String,
+    countries: {
+      type: Number,
     },
     sold: {
       type: Number,

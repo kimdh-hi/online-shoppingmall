@@ -17,6 +17,7 @@ function CheckBox(props) {
     }
 
     setChecked(newChecked);
+    props.handleFilters(newChecked);
   };
 
   const renderingCheckbox = () =>
@@ -24,7 +25,7 @@ function CheckBox(props) {
     props.list.map((value, index) => (
       <React.Fragment key={index}>
         <Checkbox
-          onChange={checkBoxhandler(value._id)}
+          onChange={() => checkBoxhandler(value._id)}
           checked={Checked.indexOf(value._id) === -1 ? false : true}
         />
         <span>{value.name}</span>
@@ -34,7 +35,7 @@ function CheckBox(props) {
   return (
     <div>
       <Collapse>
-        <Panel header="This is panel nest panel 1">{renderingCheckbox()}</Panel>
+        <Panel header="Country">{renderingCheckbox()}</Panel>
       </Collapse>
     </div>
   );

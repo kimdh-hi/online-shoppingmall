@@ -45,7 +45,15 @@ router.post("/products", (req, res) => {
   let skip = req.body.skip ? parseInt(req.body.limit) : 0;
   let limit = req.body.limit ? parseInt(req.body.limit) : 10;
 
-  Product.find()
+  let filterIndex = {};
+
+  for (let key in req.body.filters) {
+    if (req.body.filters[key].length > 0) {
+      filterIndex[key] = req.body.filters[key];
+    }
+  }
+
+  Product.find(filterIndex)
     .populate("writer")
     .skip(skip)
     .limit(limit)
