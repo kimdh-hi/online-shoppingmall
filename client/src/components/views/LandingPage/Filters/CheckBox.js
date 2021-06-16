@@ -20,22 +20,22 @@ function CheckBox(props) {
     props.handleFilters(newChecked);
   };
 
-  const renderingCheckbox = () =>
+  const renderCheckbox = () =>
     props.list &&
     props.list.map((value, index) => (
-      <React.Fragment key={index}>
-        <Checkbox
-          onChange={() => checkBoxhandler(value._id)}
-          checked={Checked.indexOf(value._id) === -1 ? false : true}
-        />
+      <Checkbox
+        key={index}
+        onChange={() => checkBoxhandler(value._id)}
+        checked={Checked.indexOf(value._id) === -1 ? false : true}
+      >
         <span>{value.name}</span>
-      </React.Fragment>
+      </Checkbox>
     ));
 
   return (
     <div>
       <Collapse>
-        <Panel header="Country">{renderingCheckbox()}</Panel>
+        <Panel header="Country">{renderCheckbox()}</Panel>
       </Collapse>
     </div>
   );

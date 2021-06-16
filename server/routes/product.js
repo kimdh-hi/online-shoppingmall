@@ -49,9 +49,21 @@ router.post("/products", (req, res) => {
 
   for (let key in req.body.filters) {
     if (req.body.filters[key].length > 0) {
-      filterIndex[key] = req.body.filters[key];
+      console.log("key", key);
+      if (key === "price") {
+        filterIndex[key] = {
+          // gte (mongoDB): grater-than-equals
+          $gte: req.body.filters[key][0],
+          // lte (mongoDB) : less-than-equals
+          $lte: req.body.filters[key][1],
+        };
+      } else {
+        filterIndex[key] = req.body.filters[key];
+      }
     }
   }
+
+  console.log("value", filterIndex);
 
   Product.find(filterIndex)
     .populate("writer")
