@@ -6,6 +6,7 @@ import Meta from "antd/lib/card/Meta";
 import ImageSlider from "../../utils/ImageSlider";
 import CheckBox from "./Filters/CheckBox";
 import RadioBox from "./Filters/RadioBox";
+import SearchItem from "./Filters/SearchItem";
 import { countries, price } from "./Filters/Data";
 
 function LandingPage() {
@@ -17,6 +18,7 @@ function LandingPage() {
     countries: [],
     price: [],
   });
+  const [SearchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     let body = {
@@ -100,6 +102,20 @@ function LandingPage() {
     setFilters(newFilters);
   };
 
+  const updateSearchTerm = newSearchTerm => {
+    setSearchTerm(newSearchTerm);
+
+    let body = {
+      skip: 0,
+      limit: Limit,
+      filters: Filters,
+      searchTerm: newSearchTerm,
+    };
+    setSkip(0);
+    setSearchTerm(newSearchTerm);
+    requestProducts(body);
+  };
+
   return (
     <div style={{ width: "75%", margin: "3rem auto" }}>
       <div style={{ textAlign: "center" }}>
@@ -120,7 +136,15 @@ function LandingPage() {
           />
         </Col>
       </Row>
-
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "flex-end",
+          margin: "1rem auto",
+        }}
+      >
+        <SearchItem refreshFunction={updateSearchTerm} />
+      </div>
       <Row gutter={[16, 16]}>{renderCards}</Row>
       <br />
 

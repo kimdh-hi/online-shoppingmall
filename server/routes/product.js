@@ -44,12 +44,12 @@ router.post("/", (req, res) => {
 router.post("/products", (req, res) => {
   let skip = req.body.skip ? parseInt(req.body.limit) : 0;
   let limit = req.body.limit ? parseInt(req.body.limit) : 10;
+  let searchCondition = req.body.searchTerm;
 
   let filterIndex = {};
 
   for (let key in req.body.filters) {
     if (req.body.filters[key].length > 0) {
-      console.log("key", key);
       if (key === "price") {
         filterIndex[key] = {
           // gte (mongoDB): grater-than-equals
@@ -63,18 +63,30 @@ router.post("/products", (req, res) => {
     }
   }
 
-  console.log("value", filterIndex);
-
-  Product.find(filterIndex)
-    .populate("writer")
-    .skip(skip)
-    .limit(limit)
-    .exec((err, products) => {
-      if (err) return res.status(400).json({ success: false, err });
-      return res
-        .status(200)
-        .json({ success: true, products, productsLength: products.length });
-    });
+  if (searchCondition) {
+    Product.find(filterIndex)
+      .find({ $text: { $search: searchCondition } })
+      .populate("writer")
+      .skip(skip)
+      .limit(limit)
+      .exec((err, products) => {
+        if (err) return res.status(400).json({ success: false, err });
+        return res
+          .status(200)
+          .json({ success: true, products, productsLength: products.length });
+      });
+  } else {
+    Product.find(filterIndex)
+      .populate("writer")
+      .skip(skip)
+      .limit(limit)
+      .exec((err, products) => {
+        if (err) return res.status(400).json({ success: false, err });
+        return res
+          .status(200)
+          .json({ success: true, products, productsLength: products.length });
+      });
+  }
 });
 
 module.exports = router;

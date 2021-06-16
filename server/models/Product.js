@@ -38,6 +38,21 @@ const productSchema = mongoose.Schema(
   { timestamps: true }
 );
 
+// 검색 키워드
+productSchema.index(
+  {
+    title: "text",
+    description: "text",
+  },
+  {
+    weights: {
+      // 검색 가중치
+      title: 5, // 중요
+      description: 1, // 덜 중요
+    },
+  }
+);
+
 const Product = mongoose.model("Product", productSchema);
 
 module.exports = { Product };
