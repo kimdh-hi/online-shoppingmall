@@ -89,4 +89,16 @@ router.post("/products", (req, res) => {
   }
 });
 
+router.get("/detail", (req, res) => {
+  let productId = req.query.id;
+  let type = req.query.type;
+
+  Product.find({ _id: productId })
+    .populate("writer")
+    .exec((err, product) => {
+      if (err) return res.status(400).json({ success: false, err });
+      return res.status(200).json({ success: true, product });
+    });
+});
+
 module.exports = router;

@@ -8,10 +8,12 @@ import RegisterPage from "./views/RegisterPage/RegisterPage.js";
 import NavBar from "./views/NavBar/NavBar";
 import Footer from "./views/Footer/Footer";
 import UploadProductPage from "./views/UploadProductPage/UploadProductPage";
+import ProductDetailPage from "./views/ProductDetailPage/ProductDetailPage";
 
-//null   Anyone Can go inside
-//true   only logged in user can go inside
-//false  logged in user can't go inside
+// Auth
+//null  모두 접근 가능
+//true  인증된 사용자만 접근 가능
+//false 인증받지 않은 사용자만 접근 가능
 
 function App() {
   return (
@@ -26,6 +28,11 @@ function App() {
             exact
             path="/product/upload"
             component={Auth(UploadProductPage, true)}
+          />
+          <Route
+            exact
+            path="/product/:productId"
+            component={Auth(ProductDetailPage, true)}
           />
         </Switch>
       </div>
