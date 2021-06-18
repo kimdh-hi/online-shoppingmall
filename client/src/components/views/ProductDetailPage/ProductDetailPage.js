@@ -32,7 +32,7 @@ function ProductDetailPage(props) {
           <ProductImage product_info={Product} />
         </Col>
         <Col lg={12} sm={24}>
-          <ProductInfo />
+          <ProductInfo product_info={Product} />
         </Col>
       </Row>
     </div>
