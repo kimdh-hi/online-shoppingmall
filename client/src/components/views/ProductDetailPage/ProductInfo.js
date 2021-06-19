@@ -1,7 +1,15 @@
 import React from "react";
 import { Descriptions, Button, Icon } from "antd"; // https://ant.design/components/descriptions/
+import { useDispatch } from "react-redux";
+import { addToCart } from "../.././../_actions/user_actions";
 
 function ProductInfo(props) {
+  const dispatch = useDispatch();
+
+  const cartHandler = () => {
+    dispatch(addToCart(props.product_info._id));
+  };
+
   return (
     <div>
       <Descriptions title="Product Information" bordered>
@@ -28,7 +36,12 @@ function ProductInfo(props) {
           justifyContent: "center",
         }}
       >
-        <Button type="primary" shape="round" size={"large"}>
+        <Button
+          type="primary"
+          shape="round"
+          size={"large"}
+          onClick={cartHandler()}
+        >
           Add to cart
         </Button>
       </div>
