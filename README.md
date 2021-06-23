@@ -46,4 +46,7 @@ git commit -m “product detail page 3 - Design information component using anti
 
 2021/6/19
 git commit -m "add to cart ...error..."
+
 git commit -m "add to cart - send products in a shopping cart data to backend using redux"
+
+git commit -m "add to cart features fixed"
