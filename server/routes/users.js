@@ -70,46 +70,49 @@ router.get("/logout", auth, (req, res) => {
 });
 
 router.post("/addToCart", auth, (req, res) => {
-  console.log("***************");
-  User.findOne({ _id: req.user._id }),
-    (err, userInfo) => {
-      let duplicate = false;
-      userInfo.cart.foreach(item => {
-        if (item.id === req.body.productId) {
-          duplicate = true;
-        }
-      });
+  // 기존에 상품이 장바구니에 들어있는 경우와 그렇지 않은 경우로 나누어 작업
+  // 장바구니에 추가하고자 하는 상품이 User의 cart에 있다면 cart의 해당 상품의 quantity만 증가
+  // 그렇지 않은 경우 User의 cart에 상품ID, 개수, 날짜 등을 객체로 하여 넣어줘야 함
 
-      if (duplicate) {
-        User.findOneAndUpdate(
-          { _id: req.user._id, "cart.id": req.body.productId },
-          { $inc: { "cart.$.quantity": 1 } },
-          { new: true },
-          (err, userInfo) => {
-            if (err) return res.status(400).json({ success: false, err });
-            res.status(200).send(userInfo.cart);
-          }
-        );
-      } else {
-        User.findOneAndUpdate(
-          { _id: req.user._id },
-          {
-            $push: {
-              cart: {
-                id: req.body.productId,
-                quantity: 1,
-                data: Date.now(),
-              },
-            },
-          },
-          { new: true },
-          (err, userInfo) => {
-            if (err) return res.status(400).json({ success: false, err });
-            res.status(200).send(userInfo.cart);
-          }
-        );
+  // auth middleware에서 req에 user정보를 넣어주기 때문에 req.user 가능
+  User.findOne({ _id: req.user._id }, (err, userInfo) => {
+    let duplicate = false;
+
+    userInfo.cart.forEach(item => {
+      if (item.id === req.body.productId) {
+        duplicate = true;
       }
-    };
+    });
+
+    if (duplicate) {
+      User.findOneAndUpdate(
+        {
+          _id: req.user._id,
+          "cart.id": req.body.productId,
+        },
+        { $inc: { "cart.$.quantity": 1 } },
+        { new: true },
+        (err, userInfo) => {
+          if (err) return res.status(400).json({ success: false, err });
+          res.status(200).send(userInfo.cart);
+        }
+      );
+    } else {
+      User.findOneAndUpdate(
+        { _id: req.user._id },
+        {
+          $push: {
+            cart: { id: req.body.productId, quantity: 1, date: Date.now() },
+          },
+        },
+        { new: true },
+        (err, userInfo) => {
+          if (err) return res.status(400).json({ success: false, err });
+          res.status(200).send(userInfo.cart);
+        }
+      );
+    }
+  });
 });
 
 module.exports = router;

@@ -1,18 +1,18 @@
 import React from "react";
-import { Descriptions, Button, Icon } from "antd"; // https://ant.design/components/descriptions/
+import { Descriptions, Button } from "antd"; // https://ant.design/components/descriptions/
 import { useDispatch } from "react-redux";
-import { addToCart } from "../.././../_actions/user_actions";
+import { addToCart } from "../../../_actions/user_actions";
 
 function ProductInfo(props) {
   const dispatch = useDispatch();
 
-  const cartHandler = () => {
+  const cartHandler = event => {
     dispatch(addToCart(props.product_info._id));
   };
 
   return (
     <div>
-      <Descriptions title="Product Information" bordered>
+      <Descriptions title="상세정보" bordered>
         <Descriptions.Item label="Price">
           {props.product_info.price}
         </Descriptions.Item>
@@ -40,10 +40,14 @@ function ProductInfo(props) {
           type="primary"
           shape="round"
           size={"large"}
-          onClick={cartHandler()}
+          onClick={cartHandler}
         >
           Add to cart
         </Button>
+
+        <button type="submit" onClick={cartHandler}>
+          Add to cart
+        </button>
       </div>
     </div>
   );

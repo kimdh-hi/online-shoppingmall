@@ -52,11 +52,11 @@ export function logoutUser() {
   };
 }
 
+// id: 장바구니에 넣을 상품 ID
 export function addToCart(id) {
   let body = {
     productId: id,
   };
-
   const request = axios
     .post(`${USER_SERVER}/addToCart`, body)
     .then(response => response.data);
