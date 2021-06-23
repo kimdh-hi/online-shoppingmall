@@ -5,6 +5,7 @@ import {
   AUTH_USER,
   LOGOUT_USER,
   ADD_TO_CART,
+  GET_CART_ITEMS,
 } from "./types";
 import { USER_SERVER } from "../components/Config.js";
 
@@ -63,6 +64,30 @@ export function addToCart(id) {
 
   return {
     type: ADD_TO_CART,
+    payload: request,
+  };
+}
+
+export function getCartItems(cartItemsId, userCart) {
+  const request = axios
+    .get(`/api/product/products_by_id?id=${cartItemsId}&type=array`)
+    // response: 장바구니의 상품ID값으로 DB에서 가져온 값 (quantity 없음)
+    // userCart: UserState에 있는 cart 값 (quantity를 들고있음)
+    // response에 quantity정보를 삽입
+    .then(response => {
+      console.log(response.data);
+      userCart.forEach(cartItem => {
+        response.data.product.forEach((resItem, idx) => {
+          if (cartItem.id === resItem._id) {
+            response.data.product[idx].quantity = cartItem.quantity;
+          }
+        });
+      });
+      return response.data;
+    });
+
+  return {
+    type: GET_CART_ITEMS,
     payload: request,
   };
 }

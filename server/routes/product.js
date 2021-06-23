@@ -101,4 +101,25 @@ router.get("/detail", (req, res) => {
     });
 });
 
+// 장바구니 데이터 가져오기
+// type = array
+router.get("/products_by_id", (req, res) => {
+  let productIds = req.query.id;
+  let type = req.query.type;
+
+  if (type === "array") {
+    let ids = req.query.id.split(",");
+    productIds = ids.map(item => {
+      return item;
+    });
+  }
+
+  Product.find({ _id: { $in: productIds } })
+    .populate("writer")
+    .exec((err, product) => {
+      if (err) return res.status(400).json({ success: false, err });
+      return res.status(200).json({ success: true, product });
+    });
+});
+
 module.exports = router;

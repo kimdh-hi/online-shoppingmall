@@ -4,8 +4,10 @@ import {
   AUTH_USER,
   LOGOUT_USER,
   ADD_TO_CART,
+  GET_CART_ITEMS,
 } from "../_actions/types";
 
+// redux저장소에 state로 저장
 export default function (state = {}, action) {
   switch (action.type) {
     case REGISTER_USER:
@@ -24,6 +26,8 @@ export default function (state = {}, action) {
           cart: action.payload,
         },
       };
+    case GET_CART_ITEMS:
+      return { ...state, cartDetail: action.payload }; // action.payload = cartItems
     default:
       return state;
   }

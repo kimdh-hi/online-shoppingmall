@@ -9,6 +9,7 @@ import NavBar from "./views/NavBar/NavBar";
 import Footer from "./views/Footer/Footer";
 import UploadProductPage from "./views/UploadProductPage/UploadProductPage";
 import ProductDetailPage from "./views/ProductDetailPage/ProductDetailPage";
+import CartPage from "./views/CartPage/CartPage";
 
 // Auth
 //null  모두 접근 가능
@@ -34,6 +35,7 @@ function App() {
             path="/product/:productId"
             component={Auth(ProductDetailPage, true)}
           />
+          <Route exact path="/user/cart" component={Auth(CartPage, true)} />
         </Switch>
       </div>
       <Footer />
