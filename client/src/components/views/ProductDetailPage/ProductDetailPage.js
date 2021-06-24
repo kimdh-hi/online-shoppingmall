@@ -12,13 +12,9 @@ function ProductDetailPage(props) {
     axios
       .get(`/api/product/detail?id=${productId}&type=single`)
       .then(response => {
-        if (response.data.success) {
-          //          console.log(response.data.product);
-          setProduct(response.data.product[0]);
-        } else {
-          alert("error");
-        }
-      });
+        setProduct(response.data[0]);
+      })
+      .catch(err => alert(err));
   }, []);
 
   return (

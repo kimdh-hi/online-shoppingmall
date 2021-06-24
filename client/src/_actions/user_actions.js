@@ -77,9 +77,9 @@ export function getCartItems(cartItemsId, userCart) {
     .then(response => {
       console.log(response.data);
       userCart.forEach(cartItem => {
-        response.data.product.forEach((resItem, idx) => {
+        response.data.forEach((resItem, idx) => {
           if (cartItem.id === resItem._id) {
-            response.data.product[idx].quantity = cartItem.quantity;
+            response.data[idx].quantity = cartItem.quantity;
           }
         });
       });

@@ -74,3 +74,7 @@ git commit -m "add to cart features fixed"
 git commit -m "save cart data in redux store and Design cart page"
 
 
+2021/6/24
+ 
+git commit -m "fix cart data redux state (cut down depth)"
+
