@@ -4,8 +4,8 @@ import "./CartCard.css";
 function CartCard(props) {
   const rendering = () =>
     props.products &&
-    props.products.map(item => (
-      <tr>
+    props.products.map((item, key) => (
+      <tr key={key}>
         <td>
           <img
             style={{ width: "70px" }}
