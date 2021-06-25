@@ -2,11 +2,13 @@ import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { getCartItems, removeCartItem } from "../../../_actions/user_actions";
 import CartCard from "./CartCard";
+import { Empty } from "antd";
 
 function CartPage(props) {
   const dispatch = useDispatch();
 
   const [Total, setTotal] = useState(0);
+  const [EmptyFlag, setEmptyFlag] = useState(true); // 장바구니가 빈 경우 True
 
   useEffect(() => {
     let cartItemsId = [];
@@ -23,6 +25,7 @@ function CartPage(props) {
       dispatch(getCartItems(cartItemsId, props.user.userData.cart)).then(
         response => {
           calculateTotalAmouts(response.payload);
+          setEmptyFlag(false); //
         }
       );
     }
@@ -41,7 +44,13 @@ function CartPage(props) {
   };
 
   let removeFromCart = productId => {
-    dispatch(removeCartItem(productId)).then(response => {});
+    dispatch(removeCartItem(productId)).then(response => {
+      if (response.payload.cart.length <= 0) {
+        setEmptyFlag(true);
+      } else {
+        setEmptyFlag(false);
+      }
+    });
   };
 
   return (
@@ -55,9 +64,17 @@ function CartPage(props) {
         />
       </div>
 
-      <div style={{ marginTop: "3rem" }}>
-        <h2>총 가격: ${Total}</h2>
-      </div>
+      {!EmptyFlag ? ( // 장바구니에 상품이 있는 경우
+        <div style={{ marginTop: "3rem" }}>
+          <h2>총 가격: ${Total}</h2>
+        </div>
+      ) : (
+        // 장바구니에 상품이 없는 경우
+        <Empty
+          description={"장바구니에 담긴 상품이 없습니다."}
+          style={{ marginTop: "3rem" }}
+        />
+      )}
     </div>
   );
 }

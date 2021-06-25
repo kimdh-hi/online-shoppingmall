@@ -79,3 +79,12 @@ git commit -m "save cart data in redux store and Design cart page"
 git commit -m "fix cart data redux state (cut down depth)"
 
 git commit -m "Add total amount function in cart page"
+
+
+2021/6/24
+
+git commit -m "fix a shopping cart bug"
+
+git commit -m "Design a shopping cart page when cart be empty"
+
+
