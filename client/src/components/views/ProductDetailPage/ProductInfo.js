@@ -37,17 +37,13 @@ function ProductInfo(props) {
         }}
       >
         <Button
-          type="primary"
+          type="danger"
           shape="round"
           size={"large"}
           onClick={cartHandler}
         >
-          Add to cart
+          장바구니
         </Button>
-
-        <button type="submit" onClick={cartHandler}>
-          Add to cart
-        </button>
       </div>
     </div>
   );

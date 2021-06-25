@@ -16,7 +16,7 @@ function CartCard(props) {
         <td>{item.quantity} 개</td>
         <td>{item.price}</td>
         <td>
-          <button>삭제</button>
+          <button onClick={() => props.removeItem(item._id)}>삭제</button>
         </td>
       </tr>
     ));

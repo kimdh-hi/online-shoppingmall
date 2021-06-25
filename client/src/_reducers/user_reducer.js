@@ -5,6 +5,7 @@ import {
   LOGOUT_USER,
   ADD_TO_CART,
   GET_CART_ITEMS,
+  REMOVE_CART_ITEM,
 } from "../_actions/types";
 
 // redux저장소에 state로 저장
@@ -28,6 +29,15 @@ export default function (state = {}, action) {
       };
     case GET_CART_ITEMS:
       return { ...state, cartDetail: action.payload }; // action.payload = cartItems
+    case REMOVE_CART_ITEM:
+      return {
+        ...state,
+        cartDetail: action.payload.productInfo,
+        userData: {
+          ...state.userData,
+          cart: action.payload.cart,
+        },
+      };
     default:
       return state;
   }
